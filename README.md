@@ -61,8 +61,8 @@ pnpm dev
 ```
 
 ### 🔑 Akun Login Demo (Data Seeder):
-* **Email**: `admin@admin.com`
-* **Password**: `admin123`
+* **Email**: `admin@example.com`
+* **Password**: `password123`
 
 ---
 
