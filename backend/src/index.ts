@@ -7,16 +7,25 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
 import { env } from './config/env';
 import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
+import { swaggerDocument } from './docs/swagger';
 
 export const app = express();
 
 // Security and standard request parsing middlewares
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // Allows Swagger UI inline scripts and assets
+  })
+);
 app.use(cors());
 app.use(express.json());
+
+// API Documentation via Swagger OpenAPI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Main API routing namespace
 app.use('/api', routes);
