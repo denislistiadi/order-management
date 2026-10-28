@@ -37,6 +37,15 @@ const routes: RouteRecordRaw[] = [
           subtitle: 'Katalog Produk & Inventaris',
         },
       },
+      {
+        path: 'customers',
+        name: 'Customers',
+        component: () => import('@/modules/customers/pages/CustomerListPage.vue'),
+        meta: {
+          title: 'Pelanggan',
+          subtitle: 'Buku Pelanggan & Alamat',
+        },
+      },
     ],
   },
   {
