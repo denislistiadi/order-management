@@ -13,7 +13,9 @@ export const env = {
   PORT: parseInt(process.env.PORT || '3000', 10),
   DATABASE_URL: process.env.DATABASE_URL || '',
   JWT_SECRET: process.env.JWT_SECRET || 'default-jwt-secret-key-change-in-production',
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '24h',
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '15m',
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || 'default-jwt-refresh-secret-key-change-in-production',
+  JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
 } as const;
 
 export default env;
