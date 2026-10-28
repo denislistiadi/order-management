@@ -23,12 +23,48 @@
   --pos-inset-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.04), inset -1px -1px 3px rgba(255, 255, 255, 0.9);
 }
 
+body,
+.v-application,
+.v-application [class*='text-'],
+.v-application .text-h1,
+.v-application .text-h2,
+.v-application .text-h3,
+.v-application .text-h4,
+.v-application .text-h5,
+.v-application .text-h6,
+.v-application .text-subtitle-1,
+.v-application .text-subtitle-2,
+.v-application .text-body-1,
+.v-application .text-body-2,
+.v-application .text-button,
+.v-application .text-caption,
+.v-application .text-overline,
+button,
+input,
+select,
+textarea {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--pos-bg-canvas) !important;
   color: var(--pos-text-dark);
   margin: 0;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Unified Page Header Typography */
+.page-title {
+  font-size: 1.1875rem !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.page-subtitle {
+  font-size: 0.8125rem !important;
+  color: #6B7280 !important;
+  line-height: 1.4 !important;
 }
 
 /* Card and container utilities */
@@ -153,3 +189,98 @@ body {
 .gap-4 { gap: 16px !important; }
 .gap-5 { gap: 20px !important; }
 .gap-6 { gap: 24px !important; }
+
+/* Hide default browser spinner arrows on number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+/* Modern Floating Toast Notification (Top Right) */
+.app-floating-toast {
+  z-index: 99999 !important;
+
+  .v-snackbar__wrapper {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    padding: 0 !important;
+    min-width: 320px !important;
+    max-width: 440px !important;
+    overflow: hidden !important;
+  }
+
+  &.toast-error .v-snackbar__wrapper {
+    border-left: 4px solid #ef4444 !important;
+  }
+
+  &.toast-success .v-snackbar__wrapper {
+    border-left: 4px solid #10b981 !important;
+  }
+
+  .toast-content {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 16px;
+    gap: 12px;
+    width: 100%;
+
+    .toast-icon-wrapper {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      &.icon-error {
+        background-color: #fef2f2;
+        color: #dc2626;
+      }
+
+      &.icon-success {
+        background-color: #ecfdf5;
+        color: #059669;
+      }
+    }
+
+    .toast-text {
+      flex: 1;
+      min-width: 0;
+
+      .toast-title {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.25;
+        margin-bottom: 2px;
+      }
+
+      .toast-message {
+        font-size: 0.775rem;
+        color: #4b5563;
+        line-height: 1.4;
+        word-break: break-word;
+      }
+    }
+
+    .toast-close {
+      color: #9ca3af !important;
+      margin-top: -4px;
+      margin-right: -6px;
+
+      &:hover {
+        color: #374151 !important;
+      }
+    }
+  }
+}
+

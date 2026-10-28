@@ -4,8 +4,9 @@
 -->
 <template>
   <router-view />
+  <AppToast />
 </template>
 
 <script setup lang="ts">
-// Root component initialization
+import AppToast from '@/core/layouts/components/AppToast.vue';
 </script>
