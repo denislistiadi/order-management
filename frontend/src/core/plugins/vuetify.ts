@@ -7,8 +7,12 @@ import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
 import '../assets/styles/theme.scss';
 import { createVuetify } from 'vuetify';
+import { VDateInput } from 'vuetify/labs/VDateInput';
 
 export default createVuetify({
+  components: {
+    VDateInput,
+  },
   theme: {
     defaultTheme: 'light',
     themes: {
@@ -41,6 +45,11 @@ export default createVuetify({
       elevation: 0,
     },
     VTextField: {
+      variant: 'outlined',
+      density: 'comfortable',
+      color: 'primary',
+    },
+    VDateInput: {
       variant: 'outlined',
       density: 'comfortable',
       color: 'primary',
