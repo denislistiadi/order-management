@@ -1,0 +1,31 @@
+/**
+ * Vite bundler configuration.
+ * Configures Vue single file component plugin, Vuetify auto-import plugin,
+ * path aliases, and development API proxy routing.
+ */
+
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
+import path from 'path';
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    vuetify({ autoImport: true }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
+  },
+});
