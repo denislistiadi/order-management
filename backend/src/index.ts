@@ -1,26 +1,34 @@
 /**
  * Application Bootstrap and Server Entry Point.
- * Minimal Express server with health check for initial scaffolding.
+ * Configures global security middlewares, registers API routes,
+ * mounts the global error handler, and starts the HTTP listener.
  */
 
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import { env } from './config/env';
+import routes from './routes';
+import { errorHandler } from './middlewares/errorHandler';
 
 export const app = express();
-const PORT = process.env.PORT || 3000;
 
+// Security and standard request parsing middlewares
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', (_req, res) => {
-  res.json({ success: true, message: 'OK' });
-});
+// Main API routing namespace
+app.use('/api', routes);
 
+// Central error-handling pipeline
+app.use(errorHandler);
+
+// Start server listener when executed directly (excluded during automated tests)
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`[Backend] Server listening on http://localhost:${PORT}`);
+  app.listen(env.PORT, () => {
+    console.log(`[Backend] Server listening on http://localhost:${env.PORT}`);
+    console.log(`[Backend] Environment: ${env.NODE_ENV}`);
   });
 }
 
