@@ -31,9 +31,37 @@
       margin: 0;
     }
 
+    .btn-create-order {
+      background-color: #ff5b00 !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(255, 91, 0, 0.25);
+
+      &:hover {
+        background-color: #e05000 !important;
+      }
+    }
+
     .header-actions {
       display: flex;
       gap: 10px;
+    }
+  }
+
+  .orders-card {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    background-color: #ffffff;
+    overflow: hidden;
+
+    .table-toolbar {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      background-color: #ffffff;
     }
   }
 
@@ -280,6 +308,60 @@
     &:hover {
       background-color: #ffedd5 !important;
     }
+  }
+
+  /* Order History Table Styling */
+  .table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+
+    .custom-data-table {
+      min-width: 760px;
+      background-color: #ffffff !important;
+
+      .table-header-row {
+        background-color: #f9fafb;
+      }
+
+      .table-th {
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        color: #4b5563 !important;
+        letter-spacing: 0.04em !important;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+        border-bottom: 1px solid #e5e7eb !important;
+      }
+
+      .table-item-row {
+        transition: background-color 0.12s ease;
+
+        &:hover {
+          background-color: #fbfbfc;
+        }
+
+        td {
+          border-bottom: 1px solid #f3f4f6 !important;
+          padding-top: 13px !important;
+          padding-bottom: 13px !important;
+          vertical-align: middle;
+          font-size: 0.8125rem;
+        }
+      }
+    }
+  }
+
+  .code-badge {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #1f2937;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
   }
 
   /* Placeholder State for Order History */

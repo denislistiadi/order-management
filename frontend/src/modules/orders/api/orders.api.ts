@@ -18,8 +18,16 @@ export async function createOrderApi(data: CreateOrderPayload): Promise<ApiRespo
  * Retrieves a paginated list of sales transactions.
  */
 export async function getOrdersApi(params?: OrderListParams): Promise<ApiResponse<Order[]>> {
+  const cleanParams: Record<string, unknown> = {};
+  if (params) {
+    Object.entries(params).forEach(([key, val]) => {
+      if (val !== '' && val !== null && val !== undefined) {
+        cleanParams[key] = val;
+      }
+    });
+  }
   const response = await apiClient.get<ApiResponse<Order[]>>('/orders', {
-    params,
+    params: cleanParams,
   });
   return response.data;
 }

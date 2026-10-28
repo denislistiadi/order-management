@@ -18,6 +18,7 @@
         hide-details
         clearable
         class="search-field"
+        :data-testid="searchTestId"
         @update:model-value="onSearchInput"
       />
       <div v-if="$slots['toolbar-actions']" class="toolbar-actions d-flex align-center gap-2">
@@ -92,6 +93,7 @@ interface Props {
   itemsPerPage?: number;
   showSearch?: boolean;
   searchPlaceholder?: string;
+  searchTestId?: string;
   noDataText?: string;
   loadingText?: string;
   itemsPerPageOptions?: Array<{ value: number; title: string }>;
