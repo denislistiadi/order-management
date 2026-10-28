@@ -186,6 +186,39 @@ export const swaggerDocument = {
           stock: { type: 'integer', example: 25 },
         },
       },
+      CustomerItem: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', format: 'uuid', example: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d' },
+          customer_name: { type: 'string', example: 'Budi Santoso' },
+          customer_address: { type: 'string', example: 'Jl. Sudirman No. 45, Jakarta Selatan' },
+          gender: { type: 'string', enum: ['Pria', 'Wanita'], example: 'Pria' },
+          birth_date: { type: 'string', format: 'date', example: '1990-05-14' },
+          phone: { type: 'string', nullable: true, example: '081234567890' },
+          deleted_at: { type: 'string', nullable: true, example: null },
+        },
+      },
+      CreateCustomerInput: {
+        type: 'object',
+        required: ['customer_name', 'customer_address', 'gender', 'birth_date'],
+        properties: {
+          customer_name: { type: 'string', example: 'Budi Santoso' },
+          customer_address: { type: 'string', example: 'Jl. Sudirman No. 45, Jakarta Selatan' },
+          gender: { type: 'string', enum: ['Pria', 'Wanita'], example: 'Pria' },
+          birth_date: { type: 'string', format: 'date', example: '1990-05-14' },
+          phone: { type: 'string', nullable: true, example: '081234567890' },
+        },
+      },
+      UpdateCustomerInput: {
+        type: 'object',
+        properties: {
+          customer_name: { type: 'string', example: 'Budi Santoso Updated' },
+          customer_address: { type: 'string', example: 'Jl. Thamrin No. 88, Jakarta Pusat' },
+          gender: { type: 'string', enum: ['Pria', 'Wanita'], example: 'Pria' },
+          birth_date: { type: 'string', format: 'date', example: '1990-05-14' },
+          phone: { type: 'string', nullable: true, example: '081987654321' },
+        },
+      },
       PaginationMeta: {
         type: 'object',
         properties: {
@@ -670,6 +703,275 @@ export const swaggerDocument = {
           },
           '404': {
             description: 'Produk tidak ditemukan atau sudah dihapus sebelumnya.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '422': {
+            description: 'Format ID tidak valid.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+        },
+      },
+    },
+    '/customers': {
+      get: {
+        tags: ['Customers'],
+        summary: 'Daftar Pelanggan',
+        description: 'Mengambil daftar pelanggan aktif dengan pagination, pencarian nama pelanggan, dan multi-field sorting.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            name: 'page',
+            in: 'query',
+            schema: { type: 'integer', default: 1 },
+            description: 'Nomor halaman yang ingin diambil',
+          },
+          {
+            name: 'per_page',
+            in: 'query',
+            schema: { type: 'integer', default: 10 },
+            description: 'Jumlah pelanggan per halaman',
+          },
+          {
+            name: 'search',
+            in: 'query',
+            schema: { type: 'string' },
+            description: 'Kata kunci pencarian untuk nama pelanggan (case-insensitive)',
+          },
+          {
+            name: 'sort',
+            in: 'query',
+            schema: { type: 'string', default: 'customer_name' },
+            description: 'Kolom pengurutan (misal: customer_name:asc,birth_date:desc)',
+          },
+          {
+            name: 'order',
+            in: 'query',
+            schema: { type: 'string', enum: ['asc', 'desc'], default: 'asc' },
+            description: 'Arah pengurutan default',
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Daftar pelanggan berhasil diambil.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Daftar pelanggan berhasil diambil' },
+                    data: {
+                      type: 'array',
+                      items: { $ref: '#/components/schemas/CustomerItem' },
+                    },
+                    meta: { $ref: '#/components/schemas/PaginationMeta' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+        },
+      },
+      post: {
+        tags: ['Customers'],
+        summary: 'Tambah Pelanggan Baru',
+        description: 'Mendaftarkan profil pelanggan baru dengan nama, alamat, gender, tanggal lahir, dan nomor telepon opsional.',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/CreateCustomerInput' },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Pelanggan berhasil ditambahkan.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Pelanggan berhasil ditambahkan' },
+                    data: { $ref: '#/components/schemas/CustomerItem' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '422': {
+            description: 'Validasi input gagal.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+        },
+      },
+    },
+    '/customers/{id}': {
+      get: {
+        tags: ['Customers'],
+        summary: 'Detail Pelanggan',
+        description: 'Mengambil informasi lengkap profil pelanggan berdasarkan ID UUID.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID Pelanggan',
+            schema: { type: 'string', format: 'uuid' },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Detail pelanggan berhasil diambil.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Detail pelanggan berhasil diambil' },
+                    data: { $ref: '#/components/schemas/CustomerItem' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '404': {
+            description: 'Pelanggan tidak ditemukan.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '422': {
+            description: 'Format ID bukan UUID valid.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+        },
+      },
+      put: {
+        tags: ['Customers'],
+        summary: 'Perbarui Data Pelanggan',
+        description: 'Memperbarui profil pelanggan yang sudah ada berdasarkan ID UUID.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID Pelanggan',
+            schema: { type: 'string', format: 'uuid' },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/UpdateCustomerInput' },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Data pelanggan berhasil diperbarui.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Data pelanggan berhasil diperbarui' },
+                    data: { $ref: '#/components/schemas/CustomerItem' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '404': {
+            description: 'Pelanggan tidak ditemukan.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '422': {
+            description: 'Validasi input gagal.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+        },
+      },
+      delete: {
+        tags: ['Customers'],
+        summary: 'Hapus Pelanggan (Soft Delete)',
+        description: 'Menghapus pelanggan secara lunak dengan mencatat waktu deleted_at.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'UUID Pelanggan',
+            schema: { type: 'string', format: 'uuid' },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Pelanggan berhasil dihapus.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Pelanggan berhasil dihapus' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: {
+              'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
+            },
+          },
+          '404': {
+            description: 'Pelanggan tidak ditemukan atau sudah dihapus sebelumnya.',
             content: {
               'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } },
             },
