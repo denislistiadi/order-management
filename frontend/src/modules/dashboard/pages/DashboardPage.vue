@@ -308,7 +308,7 @@
               <th class="text-left table-th" style="min-width: 200px;">NAMA PRODUK</th>
               <th class="text-right pr-6 table-th" style="width: 170px;">HARGA SATUAN</th>
               <th class="text-center table-th" style="width: 150px;">SISA STOK</th>
-              <th class="text-left table-th" style="width: 210px;">STATUS INVENTARIS</th>
+              <th class="text-left table-th" style="width: 210px;">STATUS</th>
             </tr>
           </thead>
           <tbody>

@@ -23,6 +23,19 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: 'Dashboard',
         component: () => import('@/modules/dashboard/pages/DashboardPage.vue'),
+        meta: {
+          title: 'Dashboard',
+          subtitle: 'Ringkasan Eksekutif',
+        },
+      },
+      {
+        path: 'products',
+        name: 'Products',
+        component: () => import('@/modules/products/pages/ProductListPage.vue'),
+        meta: {
+          title: 'Produk',
+          subtitle: 'Katalog Produk & Inventaris',
+        },
       },
     ],
   },

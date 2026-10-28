@@ -24,10 +24,10 @@
 
         <!-- Breadcrumbs and title -->
         <div class="d-flex align-center text-truncate">
-          <span class="header-page-title text-truncate">Dashboard</span>
+          <span class="header-page-title text-truncate">{{ pageTitle }}</span>
           <span class="mx-2 text-grey-lighten-1 font-weight-light d-none d-sm-inline">/</span>
           <span class="header-subtitle text-grey-darken-1 d-none d-sm-inline text-truncate">
-            Ringkasan Eksekutif
+            {{ pageSubtitle }}
           </span>
         </div>
       </div>
@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import UserProfileMenu from './UserProfileMenu.vue';
 
@@ -54,7 +56,11 @@ defineEmits<{
   (e: 'open-logout'): void;
 }>();
 
+const route = useRoute();
 const { mdAndDown } = useDisplay();
+
+const pageTitle = computed(() => (route.meta?.title as string) || String(route.name || 'Dashboard'));
+const pageSubtitle = computed(() => (route.meta?.subtitle as string) || 'Order Management');
 </script>
 
 <style scoped lang="scss" src="../styles/header.scss" />

@@ -27,7 +27,7 @@
       {{ authStore.error }}
     </v-alert>
 
-    <v-form ref="formRef" @submit.prevent="handleLogin" class="d-flex flex-column gap-3">
+    <v-form ref="formRef" :disabled="authStore.isLoading" @submit.prevent="handleLogin" class="d-flex flex-column gap-3">
       <div>
         <label class="text-caption font-weight-bold text-grey-darken-3 d-block mb-1">
           Email Administrator

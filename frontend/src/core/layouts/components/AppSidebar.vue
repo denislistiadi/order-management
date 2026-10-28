@@ -47,10 +47,10 @@
           :key="item.name"
           :to="item.to"
           custom
-          v-slot="{ isActive, navigate }"
+          v-slot="{ isActive, isExactActive, navigate }"
         >
           <div
-            :class="['nav-item-row', { active: isActive, expanded: showFullText }]"
+            :class="['nav-item-row', { active: item.to === '/' ? isExactActive : isActive, expanded: showFullText }]"
             :title="item.title"
             @click="handleNav(navigate)"
           >

@@ -12,13 +12,13 @@
     <v-card class="pa-5 rounded-xl border elevation-6 logout-dialog-card">
       <div class="d-flex align-center gap-3 mb-3">
         <div class="logout-icon-circle d-flex align-center justify-center">
-          <v-icon size="24" color="#EF4444">mdi-logout-variant</v-icon>
+          <v-icon size="22" color="#EF4444">mdi-logout-variant</v-icon>
         </div>
-        <div>
-          <h3 class="text-subtitle-1 font-weight-bold text-grey-darken-4 mb-0">
+        <div class="d-flex flex-column justify-center">
+          <h3 class="dialog-title-text">
             Konfirmasi Keluar
           </h3>
-          <span class="text-caption text-grey">
+          <span class="dialog-subtitle-text">
             Sesi akun Anda akan diakhiri
           </span>
         </div>
@@ -75,11 +75,27 @@ defineEmits<{
 }
 
 .logout-icon-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background-color: #FEF2F2;
   border: 1px solid #FEE2E2;
+  flex-shrink: 0;
+}
+
+.dialog-title-text {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.dialog-subtitle-text {
+  font-size: 0.75rem;
+  color: #6B7280;
+  line-height: 1.2;
+  margin-top: 2px;
 }
 
 .gap-2 {
