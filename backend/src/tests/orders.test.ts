@@ -317,6 +317,28 @@ describe('Orders API (/api/orders)', () => {
       });
     });
 
+    it('harus mendukung filter berdasarkan rentang tanggal from dan to', async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const response = await request(app)
+        .get(`/api/orders?from=${today}&to=${today}`)
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+    });
+
+    it('harus dapat menangani query parameter dengan string kosong tanpa error validasi 422', async () => {
+      const response = await request(app)
+        .get('/api/orders?page=1&per_page=10&search=&customer_id=&from=&to=')
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(Array.isArray(response.body.data)).toBe(true);
+      expect(response.body.data.length).toBeGreaterThan(0);
+    });
+
     it('harus menolak request list tanpa token otentikasi (401)', async () => {
       const response = await request(app).get('/api/orders');
       expect(response.status).toBe(401);
