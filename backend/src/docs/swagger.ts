@@ -219,6 +219,54 @@ export const swaggerDocument = {
           phone: { type: 'string', nullable: true, example: '081987654321' },
         },
       },
+      OrderItem: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', example: 1 },
+          product_id: { type: 'integer', example: 3 },
+          product_name: { type: 'string', example: 'Logitech MX Master 3S' },
+          product_code: { type: 'string', example: 'PRD-001' },
+          quantity: { type: 'integer', example: 2 },
+          unit_price: { type: 'string', example: '1650000.00' },
+          subtotal: { type: 'string', example: '3300000.00' },
+        },
+      },
+      OrderResponse: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', example: 1 },
+          order_number: { type: 'string', example: 'INV-20261028-0001' },
+          customer_id: { type: 'string', format: 'uuid', example: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d' },
+          customer_name: { type: 'string', example: 'Budi Santoso' },
+          created_by: { type: 'string', format: 'uuid', example: 'd3f1a2b4-c5e6-7890-abcd-ef1234567890' },
+          order_date: { type: 'string', format: 'date-time', example: '2026-10-28T10:30:00.000Z' },
+          total_amount: { type: 'string', example: '3300000.00' },
+          items: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/OrderItem' },
+          },
+        },
+      },
+      CreateOrderItemInput: {
+        type: 'object',
+        required: ['product_id', 'quantity'],
+        properties: {
+          product_id: { type: 'integer', example: 3 },
+          quantity: { type: 'integer', example: 2 },
+        },
+      },
+      CreateOrderInput: {
+        type: 'object',
+        required: ['customer_id', 'items'],
+        properties: {
+          customer_id: { type: 'string', format: 'uuid', example: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d' },
+          items: {
+            type: 'array',
+            minItems: 1,
+            items: { $ref: '#/components/schemas/CreateOrderItemInput' },
+          },
+        },
+      },
       PaginationMeta: {
         type: 'object',
         properties: {
@@ -985,6 +1033,145 @@ export const swaggerDocument = {
         },
       },
     },
+    '/orders': {
+      get: {
+        tags: ['Orders'],
+        summary: 'Daftar Riwayat Transaksi',
+        description: 'Mengambil riwayat order penjualan dengan paginasi, pencarian invoice/nama pelanggan, dan rentang tanggal.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          { name: 'page', in: 'query', schema: { type: 'integer', default: 1 }, description: 'Nomor halaman' },
+          { name: 'per_page', in: 'query', schema: { type: 'integer', default: 10 }, description: 'Jumlah transaksi per halaman' },
+          { name: 'search', in: 'query', schema: { type: 'string' }, description: 'Pencarian nomor invoice atau nama pelanggan' },
+          { name: 'customer_id', in: 'query', schema: { type: 'string', format: 'uuid' }, description: 'Filter berdasarkan ID pelanggan' },
+          { name: 'from', in: 'query', schema: { type: 'string', format: 'date' }, description: 'Filter mulai tanggal (YYYY-MM-DD)' },
+          { name: 'to', in: 'query', schema: { type: 'string', format: 'date' }, description: 'Filter sampai tanggal (YYYY-MM-DD)' },
+          { name: 'order', in: 'query', schema: { type: 'string', enum: ['asc', 'desc'], default: 'desc' }, description: 'Arah pengurutan berdasarkan tanggal transaksi' },
+        ],
+        responses: {
+          '200': {
+            description: 'Daftar order berhasil diambil.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Daftar riwayat transaksi berhasil diambil' },
+                    data: { type: 'array', items: { $ref: '#/components/schemas/OrderResponse' } },
+                    meta: { $ref: '#/components/schemas/PaginationMeta' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+        },
+      },
+      post: {
+        tags: ['Orders'],
+        summary: 'Buat Transaksi Penjualan (Atomic)',
+        description: 'Membuat transaksi penjualan baru secara atomik. Validasi stok semua item dilakukan di server. Jika stok kurang, seluruh transaksi otomatis dibatalkan (rollback) dengan format error dot-notation.',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/CreateOrderInput' },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Transaksi berhasil dibuat dan stok produk berhasil diperbarui.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Transaksi order berhasil dibuat' },
+                    data: { $ref: '#/components/schemas/OrderResponse' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+          '404': {
+            description: 'Pelanggan tidak ditemukan atau sudah dihapus.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+          '422': {
+            description: 'Validasi gagal atau stok tidak mencukupi (dot-notation errors).',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: false },
+                    message: { type: 'string', example: 'Stok tidak mencukupi' },
+                    errors: {
+                      type: 'object',
+                      example: {
+                        'items.0.quantity': ['Stok Logitech MX Master 3S tersisa 5, diminta 10'],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/orders/{id}': {
+      get: {
+        tags: ['Orders'],
+        summary: 'Detail Transaksi Penjualan',
+        description: 'Mengambil detail satu order berdasarkan ID numerik, beserta item barang dan informasi harga snapshot.',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'integer' }, description: 'ID numerik order' },
+        ],
+        responses: {
+          '200': {
+            description: 'Detail order berhasil diambil.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Detail transaksi berhasil diambil' },
+                    data: { $ref: '#/components/schemas/OrderResponse' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+          '404': {
+            description: 'Order tidak ditemukan.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+          '422': {
+            description: 'Format ID tidak valid.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+        },
+      },
+    },
+
   },
 };
 
