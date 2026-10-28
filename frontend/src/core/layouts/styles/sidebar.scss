@@ -1,0 +1,108 @@
+.app-sidebar {
+  background-color: #16181D !important;
+}
+
+.brand-header-row {
+  min-height: 40px;
+}
+
+.brand-logo-box {
+  width: 32px;
+  height: 32px;
+  background-color: #FF5B00;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(255, 91, 0, 0.35);
+}
+
+.brand-text-container {
+  margin-left: 10px;
+  line-height: 1.15;
+}
+
+.brand-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+}
+
+.text-orange-accent {
+  color: #FF5B00;
+}
+
+.brand-subtitle {
+  font-size: 0.65rem;
+  color: #9CA3AF;
+  letter-spacing: 0.02em;
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.gap-1 {
+  gap: 4px;
+}
+
+.nav-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  min-height: 42px;
+
+  &.expanded {
+    justify-content: flex-start;
+  }
+
+  &:hover {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  &.active {
+    background-color: #FF5B00;
+    color: #FFFFFF;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(255, 91, 0, 0.35);
+
+    .nav-icon {
+      color: #FFFFFF !important;
+    }
+  }
+}
+
+.nav-icon {
+  color: inherit;
+}
+
+.nav-label {
+  margin-left: 12px;
+  font-size: 0.84rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}

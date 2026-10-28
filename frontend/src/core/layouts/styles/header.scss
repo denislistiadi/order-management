@@ -1,0 +1,32 @@
+.app-top-bar {
+  border-bottom: 1px solid #E5E7EB !important;
+  z-index: 100;
+}
+
+.header-toggle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  background-color: #F9FAFB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: #F3F4F6;
+    border-color: #D1D5DB;
+  }
+}
+
+.header-page-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.header-subtitle {
+  font-size: 0.8125rem;
+}

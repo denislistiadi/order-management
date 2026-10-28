@@ -26,6 +26,15 @@ export interface LoginPayload {
  * Data payload returned upon successful authentication.
  */
 export interface LoginResponseData {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   user: AdminUser;
+}
+
+/**
+ * Data payload returned upon token refresh.
+ */
+export interface RefreshResponseData {
+  accessToken: string;
+  refreshToken: string;
 }
