@@ -53,6 +53,13 @@ export default createVuetify({
       variant: 'outlined',
       density: 'comfortable',
       color: 'primary',
+      activeColor: 'primary',
+    },
+    VDatePicker: {
+      color: 'primary',
+    },
+    VDatePickerMonth: {
+      color: 'primary',
     },
     VChip: {
       rounded: 'lg',

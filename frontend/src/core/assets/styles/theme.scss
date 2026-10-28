@@ -284,3 +284,50 @@ input[type='number'] {
   }
 }
 
+/* Vuetify Date Picker Brand Colors & High Contrast (#FF5B00) */
+.v-date-picker,
+.v-picker,
+.v-overlay {
+  .v-date-picker-month__day--selected .v-btn,
+  .v-date-picker-month__day .v-btn--active,
+  .v-date-picker-month__day--range-start .v-btn,
+  .v-date-picker-month__day--range-end .v-btn,
+  .v-date-picker-month__day .v-btn.bg-primary {
+    background-color: #FF5B00 !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+
+    .v-btn__content {
+      color: #FFFFFF !important;
+    }
+
+    .v-btn__overlay {
+      background-color: #FF5B00 !important;
+      opacity: 1 !important;
+    }
+  }
+
+  .v-date-picker-month__day--range-in .v-btn {
+    background-color: rgba(255, 91, 0, 0.15) !important;
+    color: #FF5B00 !important;
+    font-weight: 700 !important;
+
+    .v-btn__content {
+      color: #FF5B00 !important;
+    }
+
+    .v-btn__overlay {
+      background-color: rgba(255, 91, 0, 0.15) !important;
+      opacity: 1 !important;
+    }
+  }
+
+  .v-date-picker-controls .v-btn--active,
+  .v-date-picker-years .v-btn--active,
+  .v-date-picker-months .v-btn--active {
+    background-color: #FF5B00 !important;
+    color: #FFFFFF !important;
+  }
+}
+
+

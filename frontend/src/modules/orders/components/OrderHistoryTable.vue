@@ -43,6 +43,8 @@
             :model-value="dateRange"
             placeholder="Rentang Tanggal"
             multiple="range"
+            color="primary"
+            active-color="primary"
             density="compact"
             variant="outlined"
             hide-details
