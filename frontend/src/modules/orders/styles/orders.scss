@@ -1,0 +1,317 @@
+/**
+ * Stylesheet for Order / Transaction feature module.
+ * Conforms to the Anti-Slop UI design standard, matching Product & Customer modules.
+ */
+
+.orders-page {
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px);
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .page-title {
+      font-size: 1.1875rem;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 0.8125rem;
+      color: #6b7280;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .order-card {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    background-color: #ffffff;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+
+    .card-section-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f3f4f6;
+
+      .section-badge {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background-color: #fff7ed;
+        color: #ff5b00;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  /* Items Table Styling */
+  .items-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    .order-items-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead {
+        background-color: #f9fafb;
+
+        th {
+          padding: 12px 14px;
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #4b5563;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          text-align: left;
+          border-bottom: 1px solid #e5e7eb;
+
+          &.text-center {
+            text-align: center;
+          }
+
+          &.text-right {
+            text-align: right;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          border-bottom: 1px solid #f3f4f6;
+          transition: background-color 0.15s ease;
+
+          &:hover {
+            background-color: #fbfbfc;
+          }
+
+          td {
+            padding: 12px 14px;
+            vertical-align: middle;
+            font-size: 0.8125rem;
+
+            &.text-center {
+              text-align: center;
+            }
+
+            &.text-right {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Row Error Banner & Sub-Row */
+  .order-item-row {
+    &.row-has-error {
+      background-color: #fffbfa;
+
+      td {
+        border-bottom: 1px dashed #fecaca !important;
+      }
+    }
+  }
+
+  .order-item-error-row {
+    background-color: #fffbfa;
+    border-bottom: 1px solid #fee2e2;
+
+    td {
+      padding: 2px 14px 10px 48px !important;
+    }
+
+    .item-error-banner,
+    .row-error-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.78125rem;
+      font-weight: 600;
+      color: #b91c1c;
+
+      .error-message-text {
+        line-height: 1.4;
+      }
+    }
+  }
+
+  /* General Error Alert Notice */
+  .order-error-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    border-left: 4px solid #ef4444;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+
+    .alert-icon-wrapper {
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .alert-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 2px;
+    }
+
+    .alert-message {
+      font-size: 0.78125rem;
+      color: #b91c1c;
+      line-height: 1.4;
+    }
+  }
+
+  /* Total Callout Card */
+  .order-summary-box {
+    background-color: #fafaf9;
+    border: 1px solid #e7e5e4;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .summary-info {
+      .summary-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #78716c;
+        letter-spacing: 0.04em;
+        margin-bottom: 2px;
+      }
+
+      .summary-count {
+        font-size: 0.875rem;
+        color: #1c1917;
+        font-weight: 600;
+      }
+    }
+
+    .summary-total {
+      text-align: right;
+
+      .total-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #78716c;
+        letter-spacing: 0.04em;
+      }
+
+      .total-amount {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #ff5b00;
+        letter-spacing: -0.02em;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+    }
+  }
+
+  /* Primary Action Button */
+  .btn-submit-order {
+    background-color: #ff5b00 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(255, 91, 0, 0.25);
+    height: 44px;
+    padding: 0 24px;
+    font-size: 0.875rem;
+
+    &:hover {
+      background-color: #e05000 !important;
+    }
+  }
+
+  .btn-add-item {
+    color: #ff5b00 !important;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    border: 1px dashed #fdba74 !important;
+    background-color: #fff7ed !important;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: #ffedd5 !important;
+    }
+  }
+
+  /* Placeholder State for Order History */
+  .placeholder-card {
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+
+    .placeholder-icon {
+      margin-bottom: 16px;
+    }
+
+    .placeholder-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .placeholder-desc {
+      font-size: 0.8125rem;
+      color: #6b7280;
+      max-width: 440px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
+    }
+  }
+
+  .font-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
