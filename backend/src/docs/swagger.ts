@@ -267,6 +267,56 @@ export const swaggerDocument = {
           },
         },
       },
+      TopProductItem: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', example: 1 },
+          product_code: { type: 'string', example: 'PRD-001' },
+          product_name: { type: 'string', example: 'Logitech MX Master 3S' },
+          sold_quantity: { type: 'integer', example: 22 },
+          total_revenue: { type: 'string', example: '36300000.00' },
+          percentage: { type: 'integer', example: 29 },
+        },
+      },
+      LowStockProductItem: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', example: 3 },
+          product_code: { type: 'string', example: 'PRD-003' },
+          product_name: { type: 'string', example: 'Keychron Q1 Pro' },
+          price: { type: 'string', example: '2899000.00' },
+          stock: { type: 'integer', example: 2 },
+        },
+      },
+      DailySalesItem: {
+        type: 'object',
+        properties: {
+          date: { type: 'string', example: '2026-10-28' },
+          label: { type: 'string', example: '28 Okt' },
+          revenue: { type: 'number', example: 38600000 },
+        },
+      },
+      DashboardSummaryResponse: {
+        type: 'object',
+        properties: {
+          total_transactions: { type: 'integer', example: 30 },
+          total_revenue: { type: 'string', example: '184250000.00' },
+          total_products: { type: 'integer', example: 20 },
+          total_customers: { type: 'integer', example: 15 },
+          top_products: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/TopProductItem' },
+          },
+          low_stock_products: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/LowStockProductItem' },
+          },
+          daily_sales: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/DailySalesItem' },
+          },
+        },
+      },
       PaginationMeta: {
         type: 'object',
         properties: {
@@ -279,6 +329,35 @@ export const swaggerDocument = {
     },
   },
   paths: {
+    '/dashboard/summary': {
+      get: {
+        tags: ['Dashboard'],
+        summary: 'Ringkasan Eksekutif & Metrik Dashboard',
+        description: 'Mengambil agregasi total transaksi, akumulasi omzet penjualan, produk terlaris, inventaris stok menipis, dan tren penjualan 7 hari terakhir.',
+        security: [{ BearerAuth: [] }],
+        responses: {
+          '200': {
+            description: 'Data ringkasan dashboard berhasil diambil.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Data ringkasan dashboard berhasil diambil' },
+                    data: { $ref: '#/components/schemas/DashboardSummaryResponse' },
+                  },
+                },
+              },
+            },
+          },
+          '401': {
+            description: 'Tidak terotentikasi.',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } },
+          },
+        },
+      },
+    },
     '/auth/login': {
       post: {
         tags: ['Authentication'],
