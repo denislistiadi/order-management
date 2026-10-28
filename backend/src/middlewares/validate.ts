@@ -3,7 +3,7 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject } from 'zod';
+import { ZodSchema } from 'zod';
 
 type RequestSource = 'body' | 'query' | 'params';
 
@@ -13,7 +13,7 @@ type RequestSource = 'body' | 'query' | 'params';
  * @param schema - Zod schema to validate against
  * @param source - Part of request to validate ('body' | 'query' | 'params')
  */
-export function validate(schema: AnyZodObject, source: RequestSource = 'body') {
+export function validate(schema: ZodSchema, source: RequestSource = 'body') {
   return async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = await schema.parseAsync(req[source]);

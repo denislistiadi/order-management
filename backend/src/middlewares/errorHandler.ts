@@ -34,10 +34,19 @@ export function errorHandler(
     return;
   }
 
+  // Handle Prisma unique constraint violations (P2002)
+  if ('code' in err && err.code === 'P2002') {
+    res.status(409).json(errorResponse('Data dengan nilai unik tersebut sudah terdaftar'));
+    return;
+  }
+
   // Handle application and runtime errors
   const statusCode = 'statusCode' in err && typeof err.statusCode === 'number' ? err.statusCode : 500;
   const message = err.message || 'Internal Server Error';
-  const errors = 'errors' in err ? err.errors : undefined;
+  const errors =
+    'errors' in err && typeof err.errors === 'object' && err.errors !== null
+      ? (err.errors as Record<string, string[]>)
+      : undefined;
 
   if (statusCode === 500) {
     console.error('[Unhandled Error]:', err);
