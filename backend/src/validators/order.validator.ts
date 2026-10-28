@@ -49,11 +49,28 @@ export const orderListQuerySchema = z.object({
     .min(1, 'Data per halaman minimal 1')
     .max(100, 'Data per halaman maksimal 100')
     .default(10),
-  search: z.string().trim().optional(),
+  search: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => (val === '' ? undefined : val)),
   sort: z.string().trim().optional(),
   order: z.enum(['asc', 'desc']).optional().default('desc'),
-  customer_id: z.string().uuid('Format customer_id harus berupa UUID').optional(),
-  from: z.string().trim().optional(),
-  to: z.string().trim().optional(),
+  customer_id: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => (val === '' ? undefined : val))
+    .pipe(z.string().uuid('Format customer_id harus berupa UUID').optional()),
+  from: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => (val === '' ? undefined : val)),
+  to: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => (val === '' ? undefined : val)),
 });
 

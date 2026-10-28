@@ -9,6 +9,7 @@ import authRouter from './auth.routes';
 import productRouter from './product.routes';
 import customerRouter from './customer.routes';
 import orderRouter from './order.routes';
+import dashboardRouter from './dashboard.routes';
 import { authenticateToken } from '../middlewares/authMiddleware';
 
 const router = Router();
@@ -18,5 +19,6 @@ router.use('/auth', authRouter);
 router.use('/products', authenticateToken, productRouter);
 router.use('/customers', authenticateToken, customerRouter);
 router.use('/orders', authenticateToken, orderRouter);
+router.use('/dashboard', authenticateToken, dashboardRouter);
 
 export default router;

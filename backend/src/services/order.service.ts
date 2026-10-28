@@ -111,6 +111,25 @@ export class OrderService {
    * - Rolls back entirely on any stock shortfall and returns dot-notation errors.
    */
   async create(input: CreateOrderInput, userId: string): Promise<OrderResponse> {
+    const maxRetries = 3;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await this.executeCreateTransaction(input, userId);
+      } catch (err: any) {
+        if (err?.code === 'P2002' && attempt < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, Math.random() * 50 + 10));
+          continue;
+        }
+        throw err;
+      }
+    }
+    throw new Error('Gagal memproses transaksi order');
+  }
+
+  private async executeCreateTransaction(
+    input: CreateOrderInput,
+    userId: string
+  ): Promise<OrderResponse> {
     return await prisma.$transaction(async (tx) => {
       // Verify customer exists and is not soft-deleted
       const customer = await tx.customer.findFirst({
@@ -248,8 +267,8 @@ export class OrderService {
 
     const where: Prisma.OrderWhereInput = {};
 
-    if (params.customer_id) {
-      where.customerId = params.customer_id;
+    if (params.customer_id && params.customer_id.trim()) {
+      where.customerId = params.customer_id.trim();
     }
 
     if (params.search && params.search.trim()) {
@@ -273,14 +292,17 @@ export class OrderService {
     }
 
     if (params.from || params.to) {
-      where.orderDate = {};
-      if (params.from) {
-        where.orderDate.gte = new Date(params.from);
+      const dateFilter: Prisma.DateTimeFilter = {};
+      if (params.from && params.from.trim()) {
+        dateFilter.gte = new Date(params.from.trim());
       }
-      if (params.to) {
-        const toDate = new Date(params.to);
+      if (params.to && params.to.trim()) {
+        const toDate = new Date(params.to.trim());
         toDate.setHours(23, 59, 59, 999);
-        where.orderDate.lte = toDate;
+        dateFilter.lte = toDate;
+      }
+      if (dateFilter.gte || dateFilter.lte) {
+        where.orderDate = dateFilter;
       }
     }
 
