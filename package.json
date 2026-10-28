@@ -2,16 +2,22 @@
   "name": "order-management",
   "version": "1.0.0",
   "private": true,
-  "description": "Fullstack Online Shop (Order Management)",
+  "description": "Fullstack Online Shop (Order Management System)",
   "scripts": {
-    "dev:backend": "npm --prefix backend run dev",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "build:backend": "npm --prefix backend run build",
-    "build:frontend": "npm --prefix frontend run build",
-    "test:backend": "npm --prefix backend test",
-    "test:frontend": "npm --prefix frontend test"
+    "dev": "pnpm --parallel run dev",
+    "dev:backend": "pnpm --filter backend run dev",
+    "dev:frontend": "pnpm --filter frontend run dev",
+    "build": "pnpm --recursive run build",
+    "build:backend": "pnpm --filter backend run build",
+    "build:frontend": "pnpm --filter frontend run build",
+    "test": "pnpm --recursive run test",
+    "test:backend": "pnpm --filter backend test",
+    "test:frontend": "pnpm --filter frontend test",
+    "db:migrate": "pnpm --filter backend prisma:migrate",
+    "db:seed": "pnpm --filter backend prisma:seed",
+    "db:generate": "pnpm --filter backend prisma:generate"
   },
   "keywords": [],
-  "author": "",
+  "author": "Denis Listiadi",
   "license": "ISC"
 }
