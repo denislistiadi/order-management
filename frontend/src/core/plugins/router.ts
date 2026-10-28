@@ -46,6 +46,24 @@ const routes: RouteRecordRaw[] = [
           subtitle: 'Buku Pelanggan & Alamat',
         },
       },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('@/modules/orders/pages/OrderListPage.vue'),
+        meta: {
+          title: 'Riwayat Order',
+          subtitle: 'Riwayat Transaksi Penjualan',
+        },
+      },
+      {
+        path: 'orders/create',
+        name: 'OrderCreate',
+        component: () => import('@/modules/orders/pages/OrderCreatePage.vue'),
+        meta: {
+          title: 'Buat Order',
+          subtitle: 'Kasir & Transaksi Baru',
+        },
+      },
     ],
   },
   {
